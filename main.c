@@ -1,57 +1,73 @@
 #include <stdio.h>
-#include <stdlib.h>
-struct Node
-{
-   int data;
-   struct Node* next;
-};
 
-struct Node*head;
-void print()
-{
-    struct Node*temp1=head;
-    printf("print the list!\n");
-    while(temp1!=NULL){
-        printf("%d\n",temp1->data);
-    temp1=temp1->next;
-    }
+int MAXSIZE = 8;
+int stack[8];
+int top = -1;
+
+int isempty() {
+
+   if(top == -1)
+      return 1;
+   else
+      return 0;
 }
-void insert(int data, int n)
-{
-    struct Node* temp1 = (struct Node*)malloc(sizeof(struct Node));
-    temp1->data = data;
-    temp1->next = NULL;
-    if(n==1)
-    {
-        temp1->next = head;
-        head = temp1;
-        return;
-    }
-    struct Node* temp2 = head;
-    int i;
-    for(i = 0;i<(n-2);i++)
-    {
-        temp2 = temp2->next;
-    }
-    temp1->next = temp2->next;
-    temp2->next = temp1;
+
+int isfull() {
+
+   if(top == (MAXSIZE-1))
+      return 1;
+   else
+      return 0;
 }
-int main()
-{
-    int i,val;
-    head = NULL;
-    insert(2,1);
-    insert(3,2);
-    insert(4,1);
-    insert(5,2);
-    insert(8,3);
-    insert(11,5);
-    print();
-    printf("enter the position after which you want to enter number\n");
-    scanf("%d",&i);
-    printf("enter the value\n");
-    scanf("%d",&val);
-    insert(val,i+1);
-    print();
-    return 0;
+
+int peek() {
+   return stack[top];
+}
+
+int pop() {
+   int data;
+
+   if(!isempty()) {
+      data = stack[top];
+      top = top - 1;
+      return data;
+   } else {
+      printf("Could not retrieve data, Stack is empty.\n");
+   }
+}
+
+int push(int data) {
+
+   if(!isfull()) {
+      top = top + 1;
+      stack[top] = data;
+   } else {
+      printf("Could not insert data, Stack is full.\n");
+   }
+}
+
+int main() {
+    int i,n,x;
+    printf("enter the no. of element\n");
+    scanf("%d",&n);
+   /* push items on to the stack*/
+   printf("Enter the push element\n");
+   for(i=0;i<n;i++)
+   {
+       scanf("%d",&x);
+       push(x);
+   }
+   printf("Element at top of the stack: %d\n" ,peek());
+   printf("Elements: \n");
+
+   /* print stack data*/
+   while(!isempty()) {
+      int data = pop();
+      printf("%d\n",data);
+   }
+
+   printf("Stack full: %s\n" , isfull()?"true":"false");
+   printf("Stack empty: %s\n" , isempty()?"true":"false");
+
+   return 0;
 }
